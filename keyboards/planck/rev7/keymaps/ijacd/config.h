@@ -41,5 +41,9 @@
    - etc.
 */
 // #define MIDI_ADVANCED
-#define ENCODER_RESOLUTION 4
-#define ENCODER_MAP_KEY_DELAY 10
+// sets the length (in seconds) of the watchdog timer, which will reset the keyboard due to hang/crash in the code
+#define PLANCK_WATCHDOG_TIMEOUT 1.0
+// disables the watchdog timer - you may want to disable the watchdog timer if you use longer macros
+#define PLANCK_WATCHDOG_DISABLE
+// the resolution of the encoders used in the encoder matrix
+#define PLANCK_ENCODER_RESOLUTION 4

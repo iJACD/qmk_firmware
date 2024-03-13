@@ -130,16 +130,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 /* clang-format on */
 
-#if defined(ENCODER_MAP_ENABLE)
-const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][2] = {
-    [_QWERTY] =   { ENCODER_CCW_CW(KC_A, KC_B) },
-    [_LOWER] =  { ENCODER_CCW_CW(KC_C, KC_D) },
-    [_RAISE] =  { ENCODER_CCW_CW(KC_E, KC_F)  },
-    [_MIDDLE] = { ENCODER_CCW_CW(KC_E, KC_F)  },
-    [_ADJUST] =  { ENCODER_CCW_CW(KC_E, KC_F)  }
-};
-#endif
-
 layer_state_t layer_state_set_user(layer_state_t state) {
     return update_tri_layer_state(state, _LOWER, _RAISE, _ADJUST);
 }
@@ -163,7 +153,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             break;
         case WHO_R_U: 
             if (record->event.pressed) {
-                // TODO: Update here.
                 register_code(KC_LSFT);
                 tap_code(KC_ASTR);
                 tap_code(KC_ASTR);
@@ -263,4 +252,14 @@ deferred_token tokens[8];
 uint32_t reset_note(uint32_t trigger_time, void *note) {
     *(float*)note = 440.0f;
     return 0;
+}
+
+bool encoder_update_user(uint8_t index, bool clockwise) {
+    if (clockwise) {
+        tap_code(KC_A);
+    } else {
+        tap_code(KC_B);
+    }
+    tokens[index] = defer_exec(1000, reset_note, &melody[index][1][0]);
+    return false;
 }
